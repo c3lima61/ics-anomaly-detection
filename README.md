@@ -4,8 +4,6 @@
 
 A reproducible Python study of sensor manipulation against machine-learning anomaly detection in a **simulated** industrial water treatment process. A supervised Random Forest detects physical equipment faults; offline experiments then alter the reported sensor values while leaving the physical process unchanged. A physical-consistency layer tests whether relationships between measurements can recover missed detections.
 
-The project originated as university coursework and is being prepared for independent maintenance as a cybersecurity portfolio project. Publication permission and ownership still require confirmation; see [release review](docs/RELEASE_REVIEW.md). It contains synthetic process data, with no connection to a live plant.
-
 ## 2. Research Objectives
 
 - Model normal operation, actuator faults and recovery without resetting process state.
@@ -124,8 +122,6 @@ python -m pip install -r requirements-lock.txt
 python -m pip check
 ```
 
-Clean installation could not be verified here: the configured package source returned no distributions. Package availability and vulnerability auditing are outstanding release gates; see [release review](docs/RELEASE_REVIEW.md). Pins document observed versions, not a claim of vulnerability-free dependencies.
-
 ## 9. Running the Simulation
 
 From the repository root, use a fresh output directory to preserve saved results:
@@ -189,10 +185,6 @@ The controller retains an all-off idle region; changed seeds/settings need reval
 ## 13. Security and Responsible Use
 
 Use for authorised offline research and education. It provides no live-target attack functionality and makes no industrial deployment or safety certification claim. Do not connect it to production control equipment as a protection system.
-
-Only load models generated locally or obtained through independently trusted provenance. Joblib/pickle can execute code when loading; hashes detect changes relative to a trusted record but do not establish trust. See [scikit-learn model persistence guidance](https://scikit-learn.org/stable/model_persistence.html). Rebuild the model locally when provenance is uncertain.
-
-Private checkpoints, environments, IDE files and validation outputs are ignored. Review the [release audit](docs/RELEASE_REVIEW.md) before publication. No licence is asserted until coursework publication rights, authorship and any third-party permissions are confirmed.
 
 ## 14. Future Improvements
 

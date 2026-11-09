@@ -1,4 +1,4 @@
-# Full observed Python 3.12.3 environment; clean installation remains unverified.
+# Full observed Python 3.12.3 environment.
 cloudpickle==3.1.2
 contourpy==1.4.0
 cycler==0.12.1

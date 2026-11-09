@@ -1,4 +1,4 @@
-# Verified research environment: Python 3.12.3. See docs/RELEASE_REVIEW.md.
+# research environment: Python 3.12.3.
 numpy==2.5.4
 pandas==3.0.6
 matplotlib==3.11.2

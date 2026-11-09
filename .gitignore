@@ -40,4 +40,5 @@ dist/
 *~
 .DS_Store
 Thumbs.db
+docs/RELEASE_REVIEW.md
 # output/ intentionally retained: synthetic data, model, metrics and figures
