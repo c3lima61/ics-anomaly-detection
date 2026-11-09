@@ -33,6 +33,7 @@ dist/
 # Private checkpoints and non-destructive validation
 .release-backup/
 .validation/
+docs/RELEASE_REVIEW.md
 # Temporary files
 *.log
 *.tmp
@@ -40,5 +41,4 @@ dist/
 *~
 .DS_Store
 Thumbs.db
-docs/RELEASE_REVIEW.md
 # output/ intentionally retained: synthetic data, model, metrics and figures
