@@ -1,0 +1,102 @@
+Stage 4: frozen-model sensor manipulation
+
+Test rows: 3024; normal: 2534; abnormal: 490
+Baseline TP=423, FN=67, FP=2, TN=2532
+Normal training rows used for every reference: 5576
+Normal reference statistics:
+       sensor  normal_training_rows  normal_median  normal_q05  normal_q95  physical_min  physical_max
+  tank1_level                  5576      58.739676   45.336333   76.237570           0.0        100.00
+  tank2_level                  5576      55.363062   45.874003   76.130922           0.0        100.00
+   inlet_flow                  5576      27.571473    0.000000   28.426404           0.0         28.80
+transfer_flow                  5576      19.940678    0.000000   20.260686           0.0         20.50
+  outlet_flow                  5576      24.512295    0.000000   25.724893           0.0         26.25
+     pressure                  5576       2.242834    0.335808    2.285726           0.0          3.00
+
+Continuous sensor ranking from Stage 3: ['tank1_level', 'outlet_flow', 'tank2_level', 'inlet_flow', 'pressure', 'transfer_flow']
+13 configurations x 5 strengths = 65 runs; 12 scopes each = 780 metric rows.
+ASR = baseline true positives changed to 0 / targeted baseline true positives.
+The same target cohort is used at alpha=0, giving a zero-success control.
+Untargeted scopes have undefined ASR (blank/NaN), not a false zero success rate.
+Every scope uses the same untouched normal test rows for precision and F1.
+Normal predictions unchanged: FP=2 and TN=2532 for every run.
+
+Results at alpha=1 (C reports its targeted fault only):
+experiment          configuration  baseline_recall  recall  false_negative_rate  precision     f1  baseline_tp_attacked  previously_detected_became_fn  attack_success_rate
+         A            tank1_level           0.8633  0.5265               0.4735     0.9923 0.6880                   423                            166               0.3924
+         A            tank2_level           0.8633  0.8408               0.1592     0.9952 0.9115                   423                             11               0.0260
+         A             inlet_flow           0.8633  0.7837               0.2163     0.9948 0.8767                   423                             39               0.0922
+         A          transfer_flow           0.8633  0.8531               0.1469     0.9952 0.9187                   423                              6               0.0142
+         A            outlet_flow           0.8633  0.8531               0.1469     0.9952 0.9187                   423                             11               0.0260
+         A               pressure           0.8633  0.8347               0.1653     0.9951 0.9079                   423                             16               0.0378
+         B                  top_1           0.8633  0.5265               0.4735     0.9923 0.6880                   423                            166               0.3924
+         B                  top_2           0.8633  0.4776               0.5224     0.9915 0.6446                   423                            192               0.4539
+         B                  top_3           0.8633  0.4694               0.5306     0.9914 0.6371                   423                            194               0.4586
+         B                  top_6           0.8633  0.0000               1.0000     0.0000 0.0000                   423                            423               1.0000
+         C  transfer_pump_failure           0.9932  0.9252               0.0748     0.9855 0.9544                   146                             11               0.0753
+         C inlet_valve_stuck_open           0.9318  0.0000               1.0000     0.0000 0.0000                   164                            164               1.0000
+         C    outlet_pump_failure           0.6766  0.5629               0.4371     0.9792 0.7148                   113                             19               0.1681
+
+Greatest observed single-sensor recall loss: tank1_level, alpha=0.75;
+  recall 86.33% -> 52.65%, ASR 39.24%.
+At alpha=1, best single-sensor recall is 52.65%; all-six recall is 0.00%.
+ASR decreases at a stronger step in 0 of 13 configurations: [].
+In this grid ASR is nondecreasing for every group, including plateaus.
+Recall increases at a stronger step in 1 configurations: ['A/outlet_flow'].
+This can happen when previously missed abnormal rows become detected; they are
+counted separately and do not cancel successful evasion in the ASR numerator.
+Neither monotonicity nor a benefit from adding sensors is guaranteed by a forest.
+At alpha=1, easiest fault-specific target by ASR is inlet_valve_stuck_open:
+  ASR 100.00%; recall 93.18% -> 0.00%.
+This compares baseline true positives, rather than crediting pre-existing misses.
+
+All-six/alpha=1 predictions grouped by unchanged actual actuator states:
+ inlet_valve_actual  pump1_actual  pump2_actual  abnormal_rows  baseline_tp  evaded_baseline_tp  remaining_detected_rows  adversarial_prediction
+                  0             0             0            213          213                 213                        0                       0
+                  0             0             1             24           10                  10                        0                       0
+                  0             1             0             19           18                  18                        0                       0
+                  0             1             1             35           11                  11                        0                       0
+                  1             0             0             22           22                  22                        0                       0
+                  1             0             1             19           19                  19                        0                       0
+                  1             1             0             78           52                  52                        0                       0
+                  1             1             1             80           78                  78                        0                       0
+No abnormal rows remain detected in the all-six/alpha=1 configuration; truthful
+actuator states alone did not prevent this particular median-based evasion.
+
+Interpretation limits:
+The primary experiment uses oracle abnormal-row selection, and experiment C also
+uses the true fault type to choose its prescribed group; labels never enter model inputs.
+One unconditional normal median per sensor mixes different operating modes and
+is not necessarily a jointly observed normal state. Reported flows may contradict
+truthful actuator states or water balance, although each sensor stays in range.
+The physical process and truthful archive remain unchanged; no simulator is rerun.
+These are fixed interpolation attacks, not an optimisation of RF settings or thresholds.
+Feature importance chooses B groups as a practical heuristic, not a causal vulnerability measure.
+One synthetic week and four held-out events limit generalisation of the results.
+
+Concrete examples (retrospective illustrations, not parameter tuning):
+         configuration  source_row           timestamp event_phase  alpha  baseline_prediction  adversarial_prediction                                changed_sensors
+ transfer_pump_failure        8626 2026-01-06 23:47:00      active    1.0                    1                       0 tank1_level|tank2_level|transfer_flow|pressure
+inlet_valve_stuck_open        9309 2026-01-07 11:10:00      active    1.0                    1                       0                         tank1_level|inlet_flow
+   outlet_pump_failure        7398 2026-01-06 03:19:00      active    1.0                    1                       0                        tank2_level|outlet_flow
+
+         configuration  source_row        sensor   truthful  manipulated  changed  baseline_prediction  adversarial_prediction
+ transfer_pump_failure        8626   tank1_level  46.994356    58.739676     True                    1                       0
+ transfer_pump_failure        8626   tank2_level  48.960385    55.363062     True                    1                       0
+ transfer_pump_failure        8626    inlet_flow  28.432160    28.432160    False                    1                       0
+ transfer_pump_failure        8626 transfer_flow   0.000000    19.940678     True                    1                       0
+ transfer_pump_failure        8626   outlet_flow  25.102261    25.102261    False                    1                       0
+ transfer_pump_failure        8626      pressure   0.374941     2.242834     True                    1                       0
+inlet_valve_stuck_open        9309   tank1_level 100.000000    58.739676     True                    1                       0
+inlet_valve_stuck_open        9309   tank2_level  57.021073    57.021073    False                    1                       0
+inlet_valve_stuck_open        9309    inlet_flow  27.718572    27.571473     True                    1                       0
+inlet_valve_stuck_open        9309 transfer_flow  20.022846    20.022846    False                    1                       0
+inlet_valve_stuck_open        9309   outlet_flow   0.000000     0.000000    False                    1                       0
+inlet_valve_stuck_open        9309      pressure   2.220729     2.220729    False                    1                       0
+   outlet_pump_failure        7398   tank1_level  63.605375    63.605375    False                    1                       0
+   outlet_pump_failure        7398   tank2_level  79.592124    55.363062     True                    1                       0
+   outlet_pump_failure        7398    inlet_flow  28.180212    28.180212    False                    1                       0
+   outlet_pump_failure        7398 transfer_flow   0.000000     0.000000    False                    1                       0
+   outlet_pump_failure        7398   outlet_flow   0.000000    24.512295     True                    1                       0
+   outlet_pump_failure        7398      pressure   0.359939     0.359939    False                    1                       0
+
+Frozen model and all Stage 3 file hashes checked unchanged.

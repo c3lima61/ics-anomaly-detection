@@ -1,0 +1,25 @@
+experiment,configuration,source_row,rule,residual,threshold,triggered,units
+B,top_6,7398,inlet_flow_state,-0.33353620731439193,0.7297864855863312,0,L/min
+B,top_6,7398,transfer_flow_state,19.940678386676446,1.7763568394002505e-15,1,L/min
+B,top_6,7398,transfer_pressure_state,1.8939723506509514,0.04035063253220681,1,bar
+B,top_6,7398,outlet_flow_state,24.512294554624532,1.7763568394002505e-15,1,L/min
+B,top_6,7398,tank1_balance,-0.763079493379194,1.1368683772161603e-13,1,percentage points (one minute)
+B,top_6,7398,tank2_balance,0.45716161679480866,1.1368683772161603e-13,1,percentage points (one minute)
+C,transfer_pump_failure,8626,inlet_flow_state,0.5271504040562149,0.7297864855863312,0,L/min
+C,transfer_pump_failure,8626,transfer_flow_state,19.940678386676446,1.7763568394002505e-15,1,L/min
+C,transfer_pump_failure,8626,transfer_pressure_state,1.8939723506509514,0.04035063253220681,1,bar
+C,transfer_pump_failure,8626,outlet_flow_state,0.09576956344836418,1.0111316802144976,0,L/min
+C,transfer_pump_failure,8626,tank1_balance,13.739387580104315,1.1368683772161603e-13,1,percentage points (one minute)
+C,transfer_pump_failure,8626,tank2_balance,4.408609230967519,1.1368683772161603e-13,1,percentage points (one minute)
+C,inlet_valve_stuck_open,9309,inlet_flow_state,-0.33353620731439193,0.7297864855863312,0,L/min
+C,inlet_valve_stuck_open,9309,transfer_flow_state,0.03997928512116289,0.4064529475717325,0,L/min
+C,inlet_valve_stuck_open,9309,transfer_pressure_state,-0.029626071808118493,0.039549230991680916,0,bar
+C,inlet_valve_stuck_open,9309,outlet_flow_state,0.0,1.7763568394002505e-15,0,L/min
+C,inlet_valve_stuck_open,9309,tank1_balance,-0.7548627331804583,1.1368683772161603e-13,1,percentage points (one minute)
+C,inlet_valve_stuck_open,9309,tank2_balance,1.3322676295501878e-15,1.1368683772161603e-13,0,percentage points (one minute)
+C,outlet_pump_failure,7398,inlet_flow_state,0.2752021150424717,0.7297864855863312,0,L/min
+C,outlet_pump_failure,7398,transfer_flow_state,0.0,1.7763568394002505e-15,0,L/min
+C,outlet_pump_failure,7398,transfer_pressure_state,0.011078295032436514,0.04035063253220681,0,bar
+C,outlet_pump_failure,7398,outlet_flow_state,24.512294554624532,1.7763568394002505e-15,1,L/min
+C,outlet_pump_failure,7398,tank1_balance,1.7763568394002505e-15,1.1368683772161603e-13,0,percentage points (one minute)
+C,outlet_pump_failure,7398,tank2_balance,2.451229455462453,1.1368683772161603e-13,1,percentage points (one minute)

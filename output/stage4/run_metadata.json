@@ -1,0 +1,250 @@
+{
+  "frozen_model_sha256": "a5da86a6f122174716c96fa95f3ac9b4900c7347865d49a5175d3cc8092194bb",
+  "frozen_input_hashes_before": {
+    "data/water_treatment_stage2.csv": "1e04222a4f9e3d3c72fad19d066e2af56d5035690c35a8de0cabd3873c24ce32",
+    "stage3/command_comparison.csv": "c78954a9af9524f199ac2f50bf0a3267114e14e0cd7e7b159183db2a1cecb9d7",
+    "stage3/command_mismatch_by_phase.csv": "cab72f044f3f8bff5342c5cc0211e649a1001f7b0a39cc70c1a94237bcbf158f",
+    "stage3/confusion_matrix.png": "6bd4f9c29fe52c39247a060cd65da8e3ef7c5b7d2280da0b3dc0d2f7dd06870a",
+    "stage3/feature_importance.csv": "6194cdd5d42dca619bdf635c4f159026ef573cc721543fc896ba9b4b6a9c8ebf",
+    "stage3/feature_importance.png": "74464ebb00f17c4d3afe4779ee0d0da2b40a396f4129114a96c6c9b00cbebbcc",
+    "stage3/overall_metrics.csv": "7db34917215410fec16d51f3fdd6febae0fac8ab92f60e243885ee8c416db7bf",
+    "stage3/per_anomaly_metrics.csv": "ad8fff2962f48ed022225ec4ed12bede70ac132e060a5977291ce9f6874d3f31",
+    "stage3/phase_metrics.csv": "f64e653cd5a623048124271ae7c6ac80a917a4dd567f11e3b787c56abbde0168",
+    "stage3/random_forest.joblib": "a5da86a6f122174716c96fa95f3ac9b4900c7347865d49a5175d3cc8092194bb",
+    "stage3/run_metadata.json": "772fea1e53376ad0079010ab817f4f97296b6545d6f20df14aa930808df4dc9d",
+    "stage3/sanity_checks.txt": "a2bc1b6352bf2c3fe1a8a684ecb4ea8d1c72b02a362d89204e8f6c5220f9951d",
+    "stage3/split_summary.csv": "f751a9b562c50aae7ea395c067e1a8c7211699aa13e1b7b85d31946bac069d73",
+    "stage3/summary.txt": "2d7eeee0e938cbf772a5adeef12166902a60c572be4c1bb9f8ab2ff5d82ccee0",
+    "stage3/test_predictions.csv": "f55c73e759bde702bc3032921eff38ddf0e4609ee78ff323beea0474dd60fea2"
+  },
+  "frozen_input_hashes_after": {
+    "data/water_treatment_stage2.csv": "1e04222a4f9e3d3c72fad19d066e2af56d5035690c35a8de0cabd3873c24ce32",
+    "stage3/command_comparison.csv": "c78954a9af9524f199ac2f50bf0a3267114e14e0cd7e7b159183db2a1cecb9d7",
+    "stage3/command_mismatch_by_phase.csv": "cab72f044f3f8bff5342c5cc0211e649a1001f7b0a39cc70c1a94237bcbf158f",
+    "stage3/confusion_matrix.png": "6bd4f9c29fe52c39247a060cd65da8e3ef7c5b7d2280da0b3dc0d2f7dd06870a",
+    "stage3/feature_importance.csv": "6194cdd5d42dca619bdf635c4f159026ef573cc721543fc896ba9b4b6a9c8ebf",
+    "stage3/feature_importance.png": "74464ebb00f17c4d3afe4779ee0d0da2b40a396f4129114a96c6c9b00cbebbcc",
+    "stage3/overall_metrics.csv": "7db34917215410fec16d51f3fdd6febae0fac8ab92f60e243885ee8c416db7bf",
+    "stage3/per_anomaly_metrics.csv": "ad8fff2962f48ed022225ec4ed12bede70ac132e060a5977291ce9f6874d3f31",
+    "stage3/phase_metrics.csv": "f64e653cd5a623048124271ae7c6ac80a917a4dd567f11e3b787c56abbde0168",
+    "stage3/random_forest.joblib": "a5da86a6f122174716c96fa95f3ac9b4900c7347865d49a5175d3cc8092194bb",
+    "stage3/run_metadata.json": "772fea1e53376ad0079010ab817f4f97296b6545d6f20df14aa930808df4dc9d",
+    "stage3/sanity_checks.txt": "a2bc1b6352bf2c3fe1a8a684ecb4ea8d1c72b02a362d89204e8f6c5220f9951d",
+    "stage3/split_summary.csv": "f751a9b562c50aae7ea395c067e1a8c7211699aa13e1b7b85d31946bac069d73",
+    "stage3/summary.txt": "2d7eeee0e938cbf772a5adeef12166902a60c572be4c1bb9f8ab2ff5d82ccee0",
+    "stage3/test_predictions.csv": "f55c73e759bde702bc3032921eff38ddf0e4609ee78ff323beea0474dd60fea2"
+  },
+  "model_retrained": false,
+  "model_threshold": "unchanged native predict",
+  "model_features": [
+    "tank1_level",
+    "tank2_level",
+    "inlet_flow",
+    "transfer_flow",
+    "outlet_flow",
+    "pressure",
+    "inlet_valve_actual",
+    "pump1_actual",
+    "pump2_actual"
+  ],
+  "sensor_ranking": [
+    "tank1_level",
+    "outlet_flow",
+    "tank2_level",
+    "inlet_flow",
+    "pressure",
+    "transfer_flow"
+  ],
+  "normal_training_rows": 5576,
+  "reference_method": "unconditional median of normal Stage 3 training rows only",
+  "train_test_boundary": 7056,
+  "test_event_ids": [
+    12,
+    13,
+    14,
+    15
+  ],
+  "test_rows": 3024,
+  "alphas": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "bounds": {
+    "tank1_level": [
+      0.0,
+      100.0
+    ],
+    "tank2_level": [
+      0.0,
+      100.0
+    ],
+    "inlet_flow": [
+      0.0,
+      28.8
+    ],
+    "transfer_flow": [
+      0.0,
+      20.5
+    ],
+    "outlet_flow": [
+      0.0,
+      26.25
+    ],
+    "pressure": [
+      0.0,
+      3.0
+    ]
+  },
+  "configurations": [
+    {
+      "experiment": "A",
+      "configuration": "tank1_level",
+      "sensors": [
+        "tank1_level"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "A",
+      "configuration": "tank2_level",
+      "sensors": [
+        "tank2_level"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "A",
+      "configuration": "inlet_flow",
+      "sensors": [
+        "inlet_flow"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "A",
+      "configuration": "transfer_flow",
+      "sensors": [
+        "transfer_flow"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "A",
+      "configuration": "outlet_flow",
+      "sensors": [
+        "outlet_flow"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "A",
+      "configuration": "pressure",
+      "sensors": [
+        "pressure"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "B",
+      "configuration": "top_1",
+      "sensors": [
+        "tank1_level"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "B",
+      "configuration": "top_2",
+      "sensors": [
+        "tank1_level",
+        "outlet_flow"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "B",
+      "configuration": "top_3",
+      "sensors": [
+        "tank1_level",
+        "outlet_flow",
+        "tank2_level"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "B",
+      "configuration": "top_6",
+      "sensors": [
+        "tank1_level",
+        "outlet_flow",
+        "tank2_level",
+        "inlet_flow",
+        "pressure",
+        "transfer_flow"
+      ],
+      "target_type": null
+    },
+    {
+      "experiment": "C",
+      "configuration": "transfer_pump_failure",
+      "sensors": [
+        "transfer_flow",
+        "pressure",
+        "tank1_level",
+        "tank2_level"
+      ],
+      "target_type": "transfer_pump_failure"
+    },
+    {
+      "experiment": "C",
+      "configuration": "inlet_valve_stuck_open",
+      "sensors": [
+        "tank1_level",
+        "inlet_flow"
+      ],
+      "target_type": "inlet_valve_stuck_open"
+    },
+    {
+      "experiment": "C",
+      "configuration": "outlet_pump_failure",
+      "sensors": [
+        "tank2_level",
+        "outlet_flow"
+      ],
+      "target_type": "outlet_pump_failure"
+    }
+  ],
+  "aggregate_result_rows": 780,
+  "row_archive_rows": 196560,
+  "normal_rows_untouched": true,
+  "protected_columns": [
+    "timestamp",
+    "inlet_valve",
+    "pump1",
+    "pump2",
+    "inlet_valve_command",
+    "inlet_valve_actual",
+    "pump1_command",
+    "pump1_actual",
+    "pump2_command",
+    "pump2_actual",
+    "label",
+    "anomaly_type",
+    "event_id",
+    "event_phase"
+  ],
+  "oracle_row_selection": true,
+  "oracle_fault_type_for_C": true,
+  "randomness": "none; references, groups, strengths and row order are fixed",
+  "software_versions": {
+    "python": "3.12.3",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scikit_learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "joblib": "1.6.0"
+  }
+}

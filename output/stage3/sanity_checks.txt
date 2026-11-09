@@ -1,0 +1,34 @@
+Sanity audit
+Near-perfect accuracy or recall (>=99%): False
+Anomaly groups with recall >=99%: ['transfer_pump_failure/all', 'transfer_pump_failure/active']
+Forbidden inputs in fitted primary model: []
+Events shared between training and test, including recovery: []
+Missing training anomaly types: []
+Missing test anomaly types: []
+Only X_train and y_train are passed to fit; no preprocessing uses future rows.
+Command columns and legacy duplicate states are absent from primary features.
+The diagnostic command model does not change the primary model or its settings.
+High active-fault recall is plausible: complete pump stoppages, disjoint pressure
+bands and sustained 100% Tank 1 levels make these simulated faults distinctive.
+Command/actual mismatch further exposes physical actuator failures directly.
+Recovery includes 15 healthy confirmation minutes that still have abnormal labels;
+instantaneous inputs can overlap normal operation, making recovery harder.
+No labels, feature values or model scores are changed to reduce performance.
+The split prevents the same event from entering both sets; temporal dependence
+and shared simulator rules remain. Only four held-out events occur in this run.
+One synthetic week does not establish generalisation to real plants or robustness
+to adversarial sensor manipulation. Feature importance is descriptive, not causal.
+
+Training-set diagnostics:
+{
+  "accuracy": 0.9988662131519275,
+  "precision": 0.9946236559139785,
+  "recall": 1.0,
+  "f1": 0.9973045822102425,
+  "false_positive_rate": 0.0014347202295552368,
+  "false_negative_rate": 0.0,
+  "tn": 5568,
+  "fp": 8,
+  "fn": 0,
+  "tp": 1480
+}

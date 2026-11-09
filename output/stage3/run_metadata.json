@@ -1,0 +1,104 @@
+{
+  "input_sha256": "1e04222a4f9e3d3c72fad19d066e2af56d5035690c35a8de0cabd3873c24ce32",
+  "features": [
+    "tank1_level",
+    "tank2_level",
+    "inlet_flow",
+    "transfer_flow",
+    "outlet_flow",
+    "pressure",
+    "inlet_valve_actual",
+    "pump1_actual",
+    "pump2_actual"
+  ],
+  "diagnostic_additional_features": [
+    "inlet_valve_command",
+    "pump1_command",
+    "pump2_command"
+  ],
+  "forbidden_feature_overlap": [],
+  "train_event_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "test_event_ids": [
+    12,
+    13,
+    14,
+    15
+  ],
+  "overlapping_event_ids": [],
+  "split_boundary_row_zero_based": 7056,
+  "train_fraction": 0.7,
+  "train_last_timestamp": "2026-01-05 21:36:00",
+  "test_first_timestamp": "2026-01-05 21:37:00",
+  "missing_train_anomaly_types": [],
+  "missing_test_anomaly_types": [],
+  "near_perfect_accuracy_or_recall": false,
+  "near_perfect_recall_groups": [
+    "transfer_pump_failure/all",
+    "transfer_pump_failure/active"
+  ],
+  "model_parameters": {
+    "bootstrap": true,
+    "ccp_alpha": 0.0,
+    "class_weight": "balanced",
+    "criterion": "gini",
+    "max_depth": null,
+    "max_features": "sqrt",
+    "max_leaf_nodes": null,
+    "max_samples": null,
+    "min_impurity_decrease": 0.0,
+    "min_samples_leaf": 2,
+    "min_samples_split": 2,
+    "min_weight_fraction_leaf": 0.0,
+    "monotonic_cst": null,
+    "n_estimators": 200,
+    "n_jobs": -1,
+    "oob_score": false,
+    "random_state": 3015,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "training_metrics": {
+    "accuracy": 0.9988662131519275,
+    "precision": 0.9946236559139785,
+    "recall": 1.0,
+    "f1": 0.9973045822102425,
+    "false_positive_rate": 0.0014347202295552368,
+    "false_negative_rate": 0.0,
+    "tn": 5568,
+    "fp": 8,
+    "fn": 0,
+    "tp": 1480
+  },
+  "test_metrics": {
+    "accuracy": 0.9771825396825397,
+    "precision": 0.9952941176470588,
+    "recall": 0.863265306122449,
+    "f1": 0.9245901639344263,
+    "false_positive_rate": 0.0007892659826361484,
+    "false_negative_rate": 0.13673469387755102,
+    "tn": 2532,
+    "fp": 2,
+    "fn": 67,
+    "tp": 423
+  },
+  "versions": {
+    "python": "3.12.3",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scikit_learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "joblib": "1.6.0"
+  }
+}

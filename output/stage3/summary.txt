@@ -1,0 +1,77 @@
+Stage 3 Random Forest baseline; abnormal label 1 is the positive class.
+Split: earliest 70% for training and latest 30% for testing; move the boundary
+to the nearest valid point if needed, keeping each event AND recovery together.
+Prefer all anomaly types in both sets; if impossible, prefer test coverage.
+No row shuffling, temporal feature engineering, scaling or test-set tuning.
+
+split  rows  normal_rows  abnormal_rows  normal_percent  abnormal_percent               start                 end
+train  7056         5576           1480       79.024943         20.975057 2026-01-01 00:01:00 2026-01-05 21:36:00
+ test  3024         2534            490       83.796296         16.203704 2026-01-05 21:37:00 2026-01-08 00:00:00
+
+Train event IDs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+Test event IDs: [12, 13, 14, 15]
+
+Primary features:
+  tank1_level
+  tank2_level
+  inlet_flow
+  transfer_flow
+  outlet_flow
+  pressure
+  inlet_valve_actual
+  pump1_actual
+  pump2_actual
+
+Model parameters:
+{
+  "bootstrap": true,
+  "ccp_alpha": 0.0,
+  "class_weight": "balanced",
+  "criterion": "gini",
+  "max_depth": null,
+  "max_features": "sqrt",
+  "max_leaf_nodes": null,
+  "max_samples": null,
+  "min_impurity_decrease": 0.0,
+  "min_samples_leaf": 2,
+  "min_samples_split": 2,
+  "min_weight_fraction_leaf": 0.0,
+  "monotonic_cst": null,
+  "n_estimators": 200,
+  "n_jobs": -1,
+  "oob_score": false,
+  "random_state": 3015,
+  "verbose": 0,
+  "warm_start": false
+}
+
+Held-out metrics:
+  accuracy: 97.7183%
+  precision: 99.5294%
+  recall: 86.3265%
+  f1: 92.4590%
+  false_positive_rate: 0.0789%
+  false_negative_rate: 13.6735%
+Confusion matrix [[TN, FP], [FN, TP]]: [[2532, 2], [67, 423]]
+
+Per-anomaly performance (same normal test rows, other faults excluded):
+          anomaly_type  test_events  positive_rows  precision  recall     f1  active_recall  recovery_recall
+ transfer_pump_failure            1            147     0.9865  0.9932 0.9898         1.0000           0.9333
+inlet_valve_stuck_open            1            176     0.9880  0.9318 0.9591         0.9860           0.6970
+   outlet_pump_failure            2            167     0.9826  0.6766 0.8014         0.8102           0.0667
+
+Active versus recovery recall:
+event_phase  positive_rows  tp  fn  recall  false_negative_rate
+     active            412 384  28  0.9320               0.0680
+   recovery             78  39  39  0.5000               0.5000
+
+Command-state diagnostic comparison (same split and fixed parameters):
+                   model  accuracy  precision  recall     f1  false_positive_rate  false_negative_rate   tn  fp  fn  tp  active_recall  recovery_recall
+   primary_actual_states    0.9772     0.9953  0.8633 0.9246               0.0008               0.1367 2532   2  67 423         0.9320           0.5000
+with_commands_diagnostic    0.9868     1.0000  0.9184 0.9574               0.0000               0.0816 2534   0  40 450         1.0000           0.4872
+
+Command/actual mismatch in test data:
+event_phase  rows  mismatch_rows
+     normal  2534              0
+     active   412            412
+   recovery    78              0

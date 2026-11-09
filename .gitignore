@@ -1,0 +1,43 @@
+# Python and local tooling
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.python-version
+.idea/
+.vscode/
+.pytest_cache/
+.ipynb_checkpoints/
+.mypy_cache/
+.ruff_cache/
+.coverage*
+htmlcov/
+*.egg-info/
+build/
+dist/
+# Credentials and machine configuration
+.env
+.env.*
+!.env.example
+.aws/
+.codex/
+.agents/
+*.pem
+*.key
+*.p12
+*.pfx
+.netrc
+.ssh/
+*credentials*.json
+# Private checkpoints and non-destructive validation
+.release-backup/
+.validation/
+# Temporary files
+*.log
+*.tmp
+*.swp
+*~
+.DS_Store
+Thumbs.db
+# output/ intentionally retained: synthetic data, model, metrics and figures

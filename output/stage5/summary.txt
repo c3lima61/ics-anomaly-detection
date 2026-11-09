@@ -1,0 +1,100 @@
+Stage 5: frozen Random Forest + one physical-consistency layer
+
+Calibration uses 5,576 normal Stage 3 training rows, including 5,564 consecutive normal pairs.
+No test data or test labels determine thresholds. Quantile is fixed at 0.99 before evaluation.
+State residual = reported value - normal-training median conditional on actual state.
+Balance residual = level[t] - level[t-1] - 0.1 * (inflow[t] - outflow[t]).
+Effective tolerance = max(99th percentile of absolute residual, eight-ULP numerical floor).
+The tiny balance tolerances reflect exact conservation in this simplified simulator, not realistic sensor accuracy.
+
+Every threshold (full precision also saved in defence_thresholds.csv):
+                   rule       feature           actuator  actuator_state  training_samples  quantile        center  absolute_residual_quantile   numerical_floor         threshold      lower_allowed     upper_allowed                          units                                      residual_definition
+       inlet_flow_state    inlet_flow inlet_valve_actual               0              2189      0.99             0                           0  1.7763568394e-15  1.7763568394e-15                  0  1.7763568394e-15                          L/min         reported value - state-conditional normal median
+       inlet_flow_state    inlet_flow inlet_valve_actual               1              3387      0.99 27.9050095278              0.729786485586 2.84217094304e-14    0.729786485586      27.1752230422     28.6347960134                          L/min         reported value - state-conditional normal median
+    transfer_flow_state transfer_flow       pump1_actual               0               871      0.99             0                           0  1.7763568394e-15  1.7763568394e-15                  0  1.7763568394e-15                          L/min         reported value - state-conditional normal median
+    transfer_flow_state transfer_flow       pump1_actual               1              4705      0.99 19.9828667035              0.406452947572 2.84217094304e-14    0.406452947572       19.576413756     20.3893196511                          L/min         reported value - state-conditional normal median
+transfer_pressure_state      pressure       pump1_actual               0               871      0.99 0.34886118327             0.0403506325322  1.7763568394e-15   0.0403506325322     0.308510550738    0.389211815802                            bar         reported value - state-conditional normal median
+transfer_pressure_state      pressure       pump1_actual               1              4705      0.99 2.25035475176             0.0395492309917  3.5527136788e-15   0.0395492309917      2.21080552077     2.28990398275                            bar         reported value - state-conditional normal median
+      outlet_flow_state   outlet_flow       pump2_actual               0              1782      0.99             0                           0  1.7763568394e-15  1.7763568394e-15                  0  1.7763568394e-15                          L/min         reported value - state-conditional normal median
+      outlet_flow_state   outlet_flow       pump2_actual               1              3794      0.99 25.0064913789               1.01113168021 2.84217094304e-14     1.01113168021      23.9953596987     26.0176230591                          L/min         reported value - state-conditional normal median
+          tank1_balance   tank1_level               none             NaN              5564      0.99             0           1.84707804607e-14 1.13686837722e-13 1.13686837722e-13 -1.13686837722e-13 1.13686837722e-13 percentage points (one minute)  delta(tank1_level) - 0.1 * (inlet_flow - transfer_flow)
+          tank2_balance   tank2_level               none             NaN              5564      0.99             0           1.84297022088e-14 1.13686837722e-13 1.13686837722e-13 -1.13686837722e-13 1.13686837722e-13 percentage points (one minute) delta(tank2_level) - 0.1 * (transfer_flow - outlet_flow)
+
+Truthful held-out performance (positive = abnormal):
+                                accuracy  precision   recall       f1  false_positive_rate  false_negative_rate    tn   fp  fn   tp  newly_flagged_normal_rows
+model                                                                                                                                                         
+random_forest                   0.977183   0.995294 0.863265 0.924590             0.000789             0.136735  2532    2  67  423                          0
+random_forest_plus_consistency  0.937500   0.776147 0.863265 0.817391             0.048145             0.136735  2412  122  67  423                        120
+Confusion matrices use [[TN, FP], [FN, TP]].
+RF: [[2532, 2], [67, 423]]
+Hybrid: [[2412, 122], [67, 423]]
+New normal rows flagged by the layer: 120 / 2534.
+Per-rule 99% intervals do not imply a 1% combined false-positive rate; the rules are OR-combined.
+
+Attack endpoints at alpha=1 (C evaluates only its targeted type):
+experiment          configuration  undefended_recall  defended_recall  undefended_false_negative_rate  defended_false_negative_rate  undefended_attack_success_rate  defended_attack_success_rate  defended_false_positive_rate  baseline_tp_saved_by_defence
+         A            tank1_level           0.526531         0.951020                        0.473469                      0.048980                        0.392435                      0.023641                      0.049724                           156
+         A            tank2_level           0.840816         1.000000                        0.159184                      0.000000                        0.026005                      0.000000                      0.049724                            11
+         A             inlet_flow           0.783673         1.000000                        0.216327                      0.000000                        0.092199                      0.000000                      0.048145                            39
+         A          transfer_flow           0.853061         1.000000                        0.146939                      0.000000                        0.014184                      0.000000                      0.048145                             6
+         A            outlet_flow           0.853061         1.000000                        0.146939                      0.000000                        0.026005                      0.000000                      0.048145                            11
+         A               pressure           0.834694         0.891837                        0.165306                      0.108163                        0.037825                      0.002364                      0.048145                            15
+         B                  top_1           0.526531         0.951020                        0.473469                      0.048980                        0.392435                      0.023641                      0.049724                           156
+         B                  top_2           0.477551         1.000000                        0.522449                      0.000000                        0.453901                      0.000000                      0.049724                           192
+         B                  top_3           0.469388         1.000000                        0.530612                      0.000000                        0.458629                      0.000000                      0.049724                           194
+         B                  top_6           0.000000         1.000000                        1.000000                      0.000000                        1.000000                      0.000000                      0.049724                           423
+         C  transfer_pump_failure           0.925170         1.000000                        0.074830                      0.000000                        0.075342                      0.000000                      0.048540                            11
+         C inlet_valve_stuck_open           0.000000         1.000000                        1.000000                      0.000000                        1.000000                      0.000000                      0.048540                           164
+         C    outlet_pump_failure           0.562874         1.000000                        0.437126                      0.000000                        0.168142                      0.000000                      0.048934                            19
+
+All-six recall restored from 0.00% to 100.00%;
+ASR changes from 100.00% to 0.00%.
+Configurations with remaining evasion at alpha=1: ['tank1_level', 'pressure', 'top_1']
+
+Most useful rules by baseline true positives saved at alpha=1 (ties shown):
+experiment          configuration  alpha                  scope                                                       most_useful_rules  baseline_tp_saved_by_leading_rule  baseline_tp_saved_by_any_rule  targeted_abnormal_caught_by_multiple_rules
+         A            tank1_level    1.0           all_abnormal                                                        inlet_flow_state                                111                            156                                           6
+         A            tank2_level    1.0           all_abnormal                                                           tank2_balance                                 11                             11                                         115
+         A             inlet_flow    1.0           all_abnormal                                                           tank1_balance                                 39                             39                                         293
+         A          transfer_flow    1.0           all_abnormal                                             tank1_balance|tank2_balance                                  6                              6                                         490
+         A            outlet_flow    1.0           all_abnormal                                                           tank2_balance                                 11                             11                                         402
+         A               pressure    1.0           all_abnormal                                                 transfer_pressure_state                                 15                             15                                          16
+         B                  top_1    1.0           all_abnormal                                                        inlet_flow_state                                111                            156                                           6
+         B                  top_2    1.0           all_abnormal                                                           tank2_balance                                192                            192                                         466
+         B                  top_3    1.0           all_abnormal                                                           tank2_balance                                194                            194                                         466
+         B                  top_6    1.0           all_abnormal                                             tank1_balance|tank2_balance                                423                            423                                         490
+         C  transfer_pump_failure    1.0  transfer_pump_failure transfer_flow_state|transfer_pressure_state|tank1_balance|tank2_balance                                 11                             11                                         147
+         C inlet_valve_stuck_open    1.0 inlet_valve_stuck_open                                                           tank1_balance                                164                            164                                          34
+         C    outlet_pump_failure    1.0    outlet_pump_failure                                                           tank2_balance                                 19                             19                                         137
+Rule counts overlap; multiple-rule and exclusive catches are saved separately.
+Some state-rule alerts already occur on truthful physical faults. Rule summaries also
+separate new alerts introduced by manipulation from alerts present on truthful inputs.
+
+ASR uses the SAME original Stage 3 RF true positives and attacked cohort as Stage 4.
+Defended numerator: targeted original RF true positives still predicted 0 by the hybrid.
+Pre-existing RF misses are excluded from both ASR denominators, but included in recall.
+
+Causal evaluation and limits:
+The rule engine sees only nine sensor/actual-state inputs, not labels or event metadata.
+Every normal and abnormal row is checked. Labels/types are used only for reporting
+and Stage 4's already-fixed attack eligibility, never to decide consistency alerts.
+Each of the 65 runs starts with no previous test sample; balance is unavailable only
+for its first sample. Subsequent checks use the previous REPORTED level, never hidden truth.
+An attack ending can also cause a normal row to alert because its previous reading was manipulated.
+Stage 4 values, model, native prediction threshold and all earlier artifacts stay unchanged.
+Exact synthetic water balance makes small inconsistent changes unusually easy to detect.
+Real measurement noise, uncertain hydraulic parameters, lag and missing samples require new
+normal-data calibration; the numerical floor is not a real-world sensor noise model.
+Coordinated plausible manipulations or constant level offsets during balanced/idle periods
+can satisfy these checks. Truthful abnormal operation can itself violate normal state ranges.
+This rule layer validates consistency, not sensor authenticity, and is not a complete defence.
+One synthetic week and four held-out events limit generalisation. No further model or defence is added.
+
+Concrete rescued examples (RF fooled, hybrid catches):
+experiment          configuration  source_row           timestamp event_phase  adversarial_prediction  consistency_alert  defended_prediction                                                                           triggered_rules
+         B                  top_6        7398 2026-01-06 03:19:00      active                       0                  1                    1 transfer_flow_state|transfer_pressure_state|outlet_flow_state|tank1_balance|tank2_balance
+         C  transfer_pump_failure        8626 2026-01-06 23:47:00      active                       0                  1                    1                   transfer_flow_state|transfer_pressure_state|tank1_balance|tank2_balance
+         C inlet_valve_stuck_open        9309 2026-01-07 11:10:00      active                       0                  1                    1                                                                             tank1_balance
+         C    outlet_pump_failure        7398 2026-01-06 03:19:00      active                       0                  1                    1                                                           outlet_flow_state|tank2_balance
+
+All source/model/Stage 3/Stage 4 hashes checked unchanged.
